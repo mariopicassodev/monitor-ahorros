@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monitor de ahorros</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #ffffff; --ink: #1c2430; --muted: #5d6877; --line: #dfe3e8;
+    --ok: #1d7a46; --ok-bg: #e6f4ec; --warn: #a85d00; --warn-bg: #fdf0dc;
+    --bad: #b3261e; --bad-bg: #fbe9e7; --na: #5d6877; --na-bg: #eceff3; --accent: #1f3a5f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12161c; --card: #1a2029; --ink: #e8ecf1; --muted: #9aa5b4; --line: #2b3441;
+      --ok: #5cc98a; --ok-bg: #16301f; --warn: #f0b35a; --warn-bg: #36280f;
+      --bad: #ff8a80; --bad-bg: #3a1a17; --na: #9aa5b4; --na-bg: #232b36; --accent: #8fb4e8;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  nav { position: sticky; top: 0; z-index: 5; background: var(--card); border-bottom: 1px solid var(--line); }
+  nav .in { max-width: 980px; margin: 0 auto; padding: 0 16px; display: flex; gap: 4px; align-items: center; overflow-x: auto; }
+  nav strong { margin-right: auto; padding: 14px 0; white-space: nowrap; color: var(--accent); }
+  nav a { padding: 14px 12px; color: var(--muted); text-decoration: none; font-size: 15px; white-space: nowrap;
+          border-bottom: 2px solid transparent; }
+  nav a:hover, nav a.on { color: var(--ink); border-bottom-color: var(--accent); }
+  main { max-width: 980px; margin: 0 auto; padding: 8px 16px 48px; }
+  section { padding-top: 28px; }
+  h1 { font-size: 26px; margin: 24px 0 4px; }
+  h2 { font-size: 20px; margin: 0 0 4px; color: var(--accent); }
+  .sub { color: var(--muted); font-size: 14px; margin: 0 0 16px; }
+  .banner { padding: 12px 16px; border-radius: 8px; margin: 16px 0 0; font-size: 15px; border: 1px solid var(--line); }
+  .banner.ok { background: var(--ok-bg); color: var(--ok); border-color: transparent; }
+  .banner.bad { background: var(--bad-bg); color: var(--bad); border-color: transparent; }
+  .banner ul { margin: 6px 0 0; padding-left: 20px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; }
+  .card h3 { margin: 0; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  .big { font-size: 32px; font-weight: 650; margin: 6px 0 2px; font-variant-numeric: tabular-nums; }
+  .detail { color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+  .badge { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 99px; margin-top: 8px; }
+  .badge.ok { background: var(--ok-bg); color: var(--ok); }
+  .badge.warn { background: var(--warn-bg); color: var(--warn); }
+  .badge.bad { background: var(--bad-bg); color: var(--bad); }
+  .badge.na { background: var(--na-bg); color: var(--na); }
+  .why { margin: 12px 0 0; padding-top: 10px; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--muted); }
+  .why b { color: var(--ink); font-weight: 600; }
+  .expl { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; margin-bottom: 14px; }
+  .expl h3 { margin: 0 0 6px; font-size: 17px; }
+  .expl p { margin: 6px 0; }
+  .expl .neg { border-left: 3px solid var(--bad); padding-left: 12px; margin-top: 10px; }
+  .expl .pos { border-left: 3px solid var(--ok); padding-left: 12px; margin-top: 10px; }
+  .expl small { color: var(--muted); }
+  table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); font-size: 15px; vertical-align: top; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); background: var(--bg); }
+  tr:last-child td { border-bottom: 0; }
+  td.n { white-space: nowrap; font-variant-numeric: tabular-nums; }
+  tr.next td { background: var(--warn-bg); }
+  tr.past td { color: var(--muted); }
+  .tag { font-size: 12px; color: var(--muted); }
+  footer { color: var(--muted); font-size: 13px; margin-top: 36px; border-top: 1px solid var(--line); padding-top: 14px; }
+  @media (max-width: 560px) { .big { font-size: 28px; } th:nth-child(3), td:nth-child(3) { display: none; } }
+</style>
+</head>
+<body>
+<nav>
+  <div class="in">
+    <strong>Monitor de ahorros</strong>
+    <a href="#metricas">Métricas</a>
+    <a href="#explicacion">Explicación de métricas</a>
+    <a href="#fechas">Fechas importantes</a>
+  </div>
+</nav>
+
+<main>
+  <h1>Monitor de ahorros · Argentina</h1>
+  <p class="sub" id="actualizado">Cargando datos…</p>
+  <div id="resumen"></div>
+
+  <section id="metricas">
+    <h2>Métricas</h2>
+    <p class="sub">Estado actual frente a los umbrales de alerta. Verde: normal · Naranja: atención · Rojo: alerta.</p>
+    <div class="grid" id="cards"></div>
+  </section>
+
+  <section id="explicacion">
+    <h2>Explicación de métricas</h2>
+    <p class="sub">Qué mide cada indicador y cuándo se vuelve una mala señal para quien tiene ahorros.</p>
+    <div id="explicaciones"></div>
+  </section>
+
+  <section id="fechas">
+    <h2>Fechas importantes de 2027</h2>
+    <p class="sub">Eventos que históricamente mueven el dólar, la deuda o la confianza. “Aprox.” = sin día oficial confirmado.</p>
+    <div id="tabla"></div>
+  </section>
+
+  <footer>
+    Información con fines educativos, no es asesoramiento financiero. Fuentes: dolarapi.com, argentinadatos.com y API estadística del BCRA.
+    Los datos se actualizan una vez por día de forma automática.
+  </footer>
+</main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const nf = (n, d = 0) => n == null ? "s/d" : Number(n).toLocaleString("es-AR", { minimumFractionDigits: d, maximumFractionDigits: d });
+const signo = (n, d = 0) => n == null ? "s/d" : (n > 0 ? "+" : "") + nf(n, d);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+function card(titulo, valor, detalle, estado, etiqueta, porque) {
+  return `<div class="card"><h3>${titulo}</h3><div class="big">${valor}</div>
+    <div class="detail">${detalle}</div><span class="badge ${estado}">${etiqueta}</span>
+    <p class="why">${porque}</p></div>`;
+}
+
+function render(d) {
+  const u = d.umbrales, dol = d.dolares, rp = d.riesgo_pais, bc = d.bcra;
+  $("actualizado").textContent = "Última actualización: " + (d.generado_utc || d.fecha_consulta);
+
+  // Banner general
+  $("resumen").innerHTML = d.alertas.length
+    ? `<div class="banner bad"><b>${d.alertas.length === 1 ? "1 alerta activa" : d.alertas.length + " alertas activas"}</b><ul>${d.alertas.map((a) => `<li>${esc(a)}</li>`).join("")}</ul></div>`
+    : `<div class="banner ok">Sin alertas: ningún indicador cruzó los umbrales.</div>`;
+
+  const c = [];
+
+  // Dólar oficial
+  c.push(card("Dólar oficial", dol ? "$" + nf(dol.oficial) : "s/d", "Banco Nación, venta",
+    dol ? "ok" : "na", dol ? "Referencia" : "Sin dato",
+    "<b>Mala señal:</b> saltos bruscos de un día para otro o que la brecha con el MEP se abra."));
+
+  // Brechas
+  const maxB = dol ? Math.max(dol.brecha_mep_pct ?? -99, dol.brecha_blue_pct ?? -99) : null;
+  const estB = maxB == null ? "na" : maxB >= u.brecha_pct ? "bad" : maxB >= u.brecha_pct / 2 ? "warn" : "ok";
+  c.push(card("Brecha cambiaria", dol ? nf(maxB, 1) + "%" : "s/d",
+    dol ? `MEP $${nf(dol.mep)} (${signo(dol.brecha_mep_pct, 1)}%) · Blue $${nf(dol.blue)} (${signo(dol.brecha_blue_pct, 1)}%)` : "",
+    estB, { ok: "Normal", warn: "Atención", bad: "Alerta", na: "Sin dato" }[estB],
+    `<b>Mala señal:</b> brecha de ${u.brecha_pct}% o más (atención desde ${u.brecha_pct / 2}%).`));
+
+  // Riesgo país
+  const rv = rp?.valor, rvar = rp?.variacion_30d;
+  const estR = rv == null ? "na" : (rv >= u.riesgo_pais || (rvar ?? 0) >= u.riesgo_pais_suba_30d) ? "bad" : (rv >= u.riesgo_pais * 0.8 || (rvar ?? 0) >= u.riesgo_pais_suba_30d / 2) ? "warn" : "ok";
+  c.push(card("Riesgo país", rv == null ? "s/d" : nf(rv) + " pb",
+    rp ? `30 días: ${signo(rvar)} pb · Rango del año: ${nf(rp.minimo_anio)}–${nf(rp.maximo_anio)} pb` : "",
+    estR, { ok: "Normal", warn: "Atención", bad: "Alerta", na: "Sin dato" }[estR],
+    `<b>Mala señal:</b> superar ${nf(u.riesgo_pais)} pb o subir ${u.riesgo_pais_suba_30d} pb o más en 30 días.`));
+
+  // Reservas
+  const sem = bc?.reservas_semanas_cayendo ?? 0;
+  const estRes = bc?.reservas_musd == null ? "na" : sem >= u.reservas_semanas ? "bad" : sem >= 2 ? "warn" : "ok";
+  c.push(card("Reservas del BCRA", bc?.reservas_musd == null ? "s/d" : "US$ " + nf(bc.reservas_musd) + " M",
+    bc?.reservas_musd == null ? "" : `7 días: ${signo(bc.reservas_var_7d_musd)} M · Semanas cayendo: ${sem}`,
+    estRes, { ok: "Normal", warn: "Atención", bad: "Alerta", na: "Sin dato" }[estRes],
+    `<b>Mala señal:</b> ${u.reservas_semanas} o más semanas seguidas de caída sin un pago de deuda que lo explique.`));
+
+  // Depósitos
+  const dv = bc?.depositos_usd_var_30d_pct;
+  const estD = bc?.depositos_usd_valor == null ? "na" : dv != null && dv <= -u.depositos_caida_30d_pct ? "bad" : dv != null && dv < 0 ? "warn" : "ok";
+  c.push(card("Depósitos en dólares", bc?.depositos_usd_valor == null ? "s/d" : "US$ " + nf(bc.depositos_usd_valor) + " M",
+    bc?.depositos_usd_valor == null ? "" : `30 días: ${signo(dv, 2)}% · Sector privado`,
+    estD, { ok: "Normal", warn: "Atención", bad: "Alerta", na: "Sin dato" }[estD],
+    `<b>Mala señal:</b> caída de ${u.depositos_caida_30d_pct}% o más en 30 días.`));
+
+  $("cards").innerHTML = c.join("");
+
+  // Explicaciones
+  const ex = [
+    ["Dólar oficial, MEP y blue",
+     "El oficial es el precio regulado (Banco Nación). El MEP es el dólar que se compra legalmente con bonos. El blue es el del mercado informal.",
+     `La <b>brecha</b> es cuánto más caro está el MEP o el blue que el oficial. Es el termómetro de la desconfianza en el peso.`,
+     `Brecha de ${u.brecha_pct}% o más: el mercado espera una devaluación o hay restricciones que presionan. Una brecha que crece rápido suele anticipar movimientos del oficial.`,
+     "Brecha baja y estable (menos de 5–10%): no hay presión inmediata sobre el tipo de cambio."],
+    ["Riesgo país",
+     "Es la sobretasa que exigen los inversores para prestarle al país, medida en puntos básicos (100 pb = 1%) sobre los bonos del Tesoro de EE. UU.",
+     "Resume cuán probable ve el mercado que Argentina pague su deuda y cuán fácil es que consiga financiamiento.",
+     `Más de ${nf(u.riesgo_pais)} pb, o una suba de ${u.riesgo_pais_suba_30d} pb o más en un mes: el mercado duda, financiarse se encarece y crece la presión sobre el dólar y las reservas.`,
+     "Por debajo de 600 pb o en baja sostenida: el país tiene acceso más fácil al crédito."],
+    ["Reservas del BCRA",
+     "Son los dólares y activos que tiene el Banco Central. Sirven para sostener el tipo de cambio y pagar deuda.",
+     "Son la “munición” del BCRA. La cifra bruta incluye préstamos y swaps, por eso importa más la tendencia que el nivel.",
+     `${u.reservas_semanas} o más semanas seguidas bajando, sin un pago de deuda que lo explique: se están vendiendo dólares para frenar el mercado. Revisá si coincide con vencimientos (enero y julio).`,
+     "Reservas estables o en suba: el BCRA tiene margen para sostener la estabilidad cambiaria."],
+    ["Depósitos en dólares",
+     "Es el total de dólares que los privados tienen depositados en bancos argentinos.",
+     "Mide la confianza de la gente en el sistema bancario. Es el dato más cercano a “qué hacen los ahorristas”.",
+     `Caída de ${u.depositos_caida_30d_pct}% o más en un mes: la gente está retirando dólares. Es una señal temprana de corrida y de presión sobre el sistema.`,
+     "Depósitos estables o creciendo: los ahorristas mantienen su confianza en los bancos."],
+  ];
+  $("explicaciones").innerHTML = ex.map(([t, q, p, neg, pos]) =>
+    `<div class="expl"><h3>${t}</h3><p>${q}</p><p><small>${p}</small></p>
+     <div class="neg"><b>Cuándo es negativo:</b> ${neg}</div>
+     <div class="pos"><b>Cuándo es positivo:</b> ${pos}</div></div>`).join("");
+
+  // Calendario
+  const prox = (d.calendario || [])[0];
+  $("tabla").innerHTML = `<table><thead><tr><th>Fecha</th><th>Falta</th><th>Evento</th></tr></thead><tbody>` +
+    (d.calendario || []).map((e, i) => {
+      const [y, m, dd] = e.fecha.split("-");
+      const dias = e.dias;
+      const falta = dias < 0 ? "pasó" : dias === 0 ? "hoy" : dias < 60 ? `${dias} días` : `~${Math.round(dias / 30)} meses`;
+      return `<tr class="${e === prox ? "next" : ""}"><td class="n">${dd}/${m}/${y}${e.aprox ? ' <span class="tag">aprox.</span>' : ""}</td>
+        <td class="n">${falta}</td><td>${esc(e.evento)}</td></tr>`;
+    }).join("") + `</tbody></table>`;
+}
+
+// Resaltar sección activa en la navegación
+const links = [...document.querySelectorAll("nav a")];
+const obs = new IntersectionObserver((es) => es.forEach((e) => {
+  if (e.isIntersecting) links.forEach((a) => a.classList.toggle("on", a.getAttribute("href") === "#" + e.target.id));
+}), { rootMargin: "-40% 0px -55% 0px" });
+document.querySelectorAll("section").forEach((s) => obs.observe(s));
+
+fetch("data.json", { cache: "no-store" }).then((r) => r.json()).then(render)
+  .catch(() => { $("actualizado").textContent = "No se pudieron cargar los datos."; });
+</script>
+</body>
+</html>
