@@ -1,2 +1,4 @@
 __pycache__/
 *.log
+docs/data.json
+historial_ahorros.csv
