@@ -1,5 +1,5 @@
 {
-  "fecha_consulta": "2026-11-06 04:41",
+  "fecha_consulta": "2026-11-06 04:46",
   "errores": {},
   "dolares": {
     "oficial": 1570,
@@ -53,7 +53,7 @@
       "dias": 184
     }
   ],
-  "generado_utc": "2026-11-06 04:41 UTC",
+  "generado_utc": "2026-11-06 04:46 UTC",
   "umbrales": {
     "riesgo_pais": 1000,
     "riesgo_pais_suba_30d": 200,
