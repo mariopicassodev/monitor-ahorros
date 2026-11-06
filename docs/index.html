@@ -37,6 +37,11 @@
   .banner.bad { background: var(--bad-bg); color: var(--bad); border-color: transparent; }
   .banner ul { margin: 6px 0 0; padding-left: 20px; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+  @media (min-width: 900px) {
+    .grid { grid-template-columns: repeat(6, 1fr); }
+    .grid .card { grid-column: span 2; }
+    .grid .card:nth-child(n+4) { grid-column: span 3; }
+  }
   .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; }
   .card h3 { margin: 0; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
   .big { font-size: 32px; font-weight: 650; margin: 6px 0 2px; font-variant-numeric: tabular-nums; }
@@ -145,7 +150,7 @@ function render(d) {
   c.push(card("Brecha cambiaria", dol ? nf(maxB, 1) + "%" : "s/d",
     dol ? `MEP $${nf(dol.mep)} (${signo(dol.brecha_mep_pct, 1)}%) · Blue $${nf(dol.blue)} (${signo(dol.brecha_blue_pct, 1)}%)` : "",
     estB, { ok: "Normal", warn: "Atención", bad: "Alerta", na: "Sin dato" }[estB],
-    `<b>Mala señal:</b> brecha de ${u.brecha_pct}% o más (atención desde ${u.brecha_pct / 2}%).`));
+    `<b>Mala señal:</b> brecha de ${u.brecha_pct}% o más (atención desde ${nf(u.brecha_pct / 2, 1)}%).`));
 
   // Riesgo país
   const rv = rp?.valor, rvar = rp?.variacion_30d;
