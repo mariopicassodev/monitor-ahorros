@@ -1,9 +1,9 @@
 {
-  "fecha_consulta": "2026-11-06 04:52",
+  "fecha_consulta": "2026-11-07 00:38",
   "errores": {},
   "dolares": {
     "oficial": 1570,
-    "mep": 1588,
+    "mep": 1587.9,
     "blue": 1555,
     "brecha_mep_pct": 1.1,
     "brecha_blue_pct": -1.0
@@ -32,28 +32,28 @@
       "fecha": "2027-01-09",
       "aprox": false,
       "evento": "Pago a bonistas (Bonares y Globales)",
-      "dias": 64
+      "dias": 63
     },
     {
       "fecha": "2027-04-01",
       "aprox": true,
       "evento": "Vencimiento BOPREAL (deuda del BCRA) - abril",
-      "dias": 146
+      "dias": 145
     },
     {
       "fecha": "2027-04-18",
       "aprox": false,
       "evento": "PASO provinciales en Santa Fe",
-      "dias": 163
+      "dias": 162
     },
     {
       "fecha": "2027-05-09",
       "aprox": false,
       "evento": "Elecciones provinciales en Tucumán",
-      "dias": 184
+      "dias": 183
     }
   ],
-  "generado_utc": "2026-11-06 04:52 UTC",
+  "generado_utc": "2026-11-07 00:38 UTC",
   "umbrales": {
     "riesgo_pais": 1000,
     "riesgo_pais_suba_30d": 200,
@@ -66,73 +66,73 @@
       "fecha": "2027-01-09",
       "aprox": false,
       "evento": "Pago a bonistas (Bonares y Globales)",
-      "dias": 64
+      "dias": 63
     },
     {
       "fecha": "2027-04-01",
       "aprox": true,
       "evento": "Vencimiento BOPREAL (deuda del BCRA) - abril",
-      "dias": 146
+      "dias": 145
     },
     {
       "fecha": "2027-04-18",
       "aprox": false,
       "evento": "PASO provinciales en Santa Fe",
-      "dias": 163
+      "dias": 162
     },
     {
       "fecha": "2027-05-09",
       "aprox": false,
       "evento": "Elecciones provinciales en Tucumán",
-      "dias": 184
+      "dias": 183
     },
     {
       "fecha": "2027-06-13",
       "aprox": false,
       "evento": "Elecciones generales en Santa Fe",
-      "dias": 219
+      "dias": 218
     },
     {
       "fecha": "2027-07-09",
       "aprox": false,
       "evento": "Pago a bonistas - el más grande del año",
-      "dias": 245
+      "dias": 244
     },
     {
       "fecha": "2027-08-15",
       "aprox": true,
       "evento": "PASO nacionales (si no se suspenden) - agosto",
-      "dias": 282
+      "dias": 281
     },
     {
       "fecha": "2027-10-01",
       "aprox": true,
       "evento": "Vencimiento BOPREAL - octubre",
-      "dias": 329
+      "dias": 328
     },
     {
       "fecha": "2027-10-24",
       "aprox": false,
       "evento": "Elecciones generales (presidente)",
-      "dias": 352
+      "dias": 351
     },
     {
       "fecha": "2027-10-29",
       "aprox": false,
       "evento": "Vence el Bonar AO27",
-      "dias": 357
+      "dias": 356
     },
     {
       "fecha": "2027-11-21",
       "aprox": false,
       "evento": "Posible balotaje",
-      "dias": 380
+      "dias": 379
     },
     {
       "fecha": "2027-12-10",
       "aprox": false,
       "evento": "Cambio o continuidad de gobierno",
-      "dias": 399
+      "dias": 398
     }
   ]
 }
