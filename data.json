@@ -1,5 +1,5 @@
 {
-  "fecha_consulta": "2026-11-07 00:38",
+  "fecha_consulta": "2026-11-08 00:13",
   "errores": {},
   "dolares": {
     "oficial": 1570,
@@ -9,11 +9,11 @@
     "brecha_blue_pct": -1.0
   },
   "riesgo_pais": {
-    "valor": 925,
-    "fecha": "2026-11-05",
-    "variacion_30d": 352,
+    "valor": 939,
+    "fecha": "2026-11-06",
+    "variacion_30d": 353,
     "minimo_anio": 402,
-    "maximo_anio": 925
+    "maximo_anio": 939
   },
   "bcra": {
     "reservas_musd": 50298.0,
@@ -25,35 +25,35 @@
     "depositos_usd_var_30d_pct": 1.83
   },
   "alertas": [
-    "Riesgo país subió 352 pb en 30 días"
+    "Riesgo país subió 353 pb en 30 días"
   ],
   "proximas_fechas": [
     {
       "fecha": "2027-01-09",
       "aprox": false,
       "evento": "Pago a bonistas (Bonares y Globales)",
-      "dias": 63
+      "dias": 62
     },
     {
       "fecha": "2027-04-01",
       "aprox": true,
       "evento": "Vencimiento BOPREAL (deuda del BCRA) - abril",
-      "dias": 145
+      "dias": 144
     },
     {
       "fecha": "2027-04-18",
       "aprox": false,
       "evento": "PASO provinciales en Santa Fe",
-      "dias": 162
+      "dias": 161
     },
     {
       "fecha": "2027-05-09",
       "aprox": false,
       "evento": "Elecciones provinciales en Tucumán",
-      "dias": 183
+      "dias": 182
     }
   ],
-  "generado_utc": "2026-11-07 00:38 UTC",
+  "generado_utc": "2026-11-08 00:13 UTC",
   "umbrales": {
     "riesgo_pais": 1000,
     "riesgo_pais_suba_30d": 200,
@@ -66,73 +66,73 @@
       "fecha": "2027-01-09",
       "aprox": false,
       "evento": "Pago a bonistas (Bonares y Globales)",
-      "dias": 63
+      "dias": 62
     },
     {
       "fecha": "2027-04-01",
       "aprox": true,
       "evento": "Vencimiento BOPREAL (deuda del BCRA) - abril",
-      "dias": 145
+      "dias": 144
     },
     {
       "fecha": "2027-04-18",
       "aprox": false,
       "evento": "PASO provinciales en Santa Fe",
-      "dias": 162
+      "dias": 161
     },
     {
       "fecha": "2027-05-09",
       "aprox": false,
       "evento": "Elecciones provinciales en Tucumán",
-      "dias": 183
+      "dias": 182
     },
     {
       "fecha": "2027-06-13",
       "aprox": false,
       "evento": "Elecciones generales en Santa Fe",
-      "dias": 218
+      "dias": 217
     },
     {
       "fecha": "2027-07-09",
       "aprox": false,
       "evento": "Pago a bonistas - el más grande del año",
-      "dias": 244
+      "dias": 243
     },
     {
       "fecha": "2027-08-15",
       "aprox": true,
       "evento": "PASO nacionales (si no se suspenden) - agosto",
-      "dias": 281
+      "dias": 280
     },
     {
       "fecha": "2027-10-01",
       "aprox": true,
       "evento": "Vencimiento BOPREAL - octubre",
-      "dias": 328
+      "dias": 327
     },
     {
       "fecha": "2027-10-24",
       "aprox": false,
       "evento": "Elecciones generales (presidente)",
-      "dias": 351
+      "dias": 350
     },
     {
       "fecha": "2027-10-29",
       "aprox": false,
       "evento": "Vence el Bonar AO27",
-      "dias": 356
+      "dias": 355
     },
     {
       "fecha": "2027-11-21",
       "aprox": false,
       "evento": "Posible balotaje",
-      "dias": 379
+      "dias": 378
     },
     {
       "fecha": "2027-12-10",
       "aprox": false,
       "evento": "Cambio o continuidad de gobierno",
-      "dias": 398
+      "dias": 397
     }
   ]
 }
