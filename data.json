@@ -1,12 +1,15 @@
 {
-  "fecha_consulta": "2026-11-16 00:46",
+  "fecha_consulta": "2026-11-16 19:30",
   "errores": {},
   "dolares": {
-    "oficial": 1570,
-    "mep": 1580.9,
-    "blue": 1575,
-    "brecha_mep_pct": 0.7,
-    "brecha_blue_pct": 0.3
+    "oficial": 1575,
+    "mep": 1584.5,
+    "blue": 1590,
+    "ccl": 1681.1,
+    "ccl_vs_mep_pct": 6.1,
+    "brecha_mep_pct": 0.6,
+    "brecha_blue_pct": 1.0,
+    "brecha_ccl_pct": 6.7
   },
   "riesgo_pais": {
     "valor": 830,
@@ -25,7 +28,8 @@
     "depositos_usd_var_30d_pct": 1.72
   },
   "alertas": [
-    "Riesgo país subió 219 pb en 30 días"
+    "Riesgo país subió 219 pb en 30 días",
+    "CCL 6.1% por encima del MEP (umbral 5.0%): sacar dólares al exterior está costando más"
   ],
   "proximas_fechas": [
     {
@@ -53,11 +57,12 @@
       "dias": 174
     }
   ],
-  "generado_utc": "2026-11-16 00:46 UTC",
+  "generado_utc": "2026-11-16 19:30 UTC",
   "umbrales": {
     "riesgo_pais": 1000,
     "riesgo_pais_suba_30d": 200,
     "brecha_pct": 15.0,
+    "ccl_vs_mep_pct": 5.0,
     "reservas_semanas": 3,
     "depositos_caida_30d_pct": 3.0
   },
