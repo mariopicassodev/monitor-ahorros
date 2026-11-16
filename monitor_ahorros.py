@@ -3,7 +3,7 @@
 Monitor de ahorros - Argentina
 ==============================
 Junta en un solo lugar los indicadores para vigilar el riesgo sobre tus ahorros:
-  - Dólar oficial, MEP y blue, y la brecha entre ellos      (dolarapi.com)
+  - Dólar oficial, MEP, CCL y blue, y la brecha entre ellos      (dolarapi.com)
   - Riesgo país y su variación en 30 días                    (argentinadatos.com)
   - Reservas del BCRA y su tendencia semanal                 (API oficial del BCRA)
   - Depósitos en dólares del sistema, si la API los publica  (API oficial del BCRA)
@@ -37,7 +37,8 @@ from datetime import date, datetime, timedelta, timezone
 # ---------------------------------------------------------------------------
 RIESGO_PAIS_ALERTA = 1000        # puntos básicos: por encima, el mercado duda del pago
 RIESGO_PAIS_SUBA_30D = 200       # puntos: suba fuerte en 30 días
-BRECHA_ALERTA_PCT = 15.0         # % de brecha MEP o blue vs oficial
+BRECHA_ALERTA_PCT = 15.0         # % de brecha MEP, CCL o blue vs oficial
+CCL_VS_MEP_ALERTA_PCT = 5.0      # % que el CCL puede superar al MEP (normalmente son casi iguales)
 RESERVAS_SEMANAS_CAIDA = 3       # semanas seguidas de caída de reservas
 DEPOSITOS_CAIDA_30D_PCT = 3.0    # % de caída de depósitos en dólares en 30 días
 
@@ -107,10 +108,14 @@ def leer_dolares():
     oficial = por_casa.get("oficial", {}).get("venta")
     mep = por_casa.get("bolsa", {}).get("venta")
     blue = por_casa.get("blue", {}).get("venta")
-    res = {"oficial": oficial, "mep": mep, "blue": blue}
+    ccl = por_casa.get("contadoconliqui", {}).get("venta")
+    res = {"oficial": oficial, "mep": mep, "blue": blue, "ccl": ccl}
+    if ccl and mep:
+        res["ccl_vs_mep_pct"] = round((ccl / mep - 1) * 100, 1)
     if oficial:
         res["brecha_mep_pct"] = round((mep / oficial - 1) * 100, 1) if mep else None
         res["brecha_blue_pct"] = round((blue / oficial - 1) * 100, 1) if blue else None
+        res["brecha_ccl_pct"] = round((ccl / oficial - 1) * 100, 1) if ccl else None
     return res
 
 
@@ -220,10 +225,15 @@ def evaluar_alertas(d):
         alertas.append(f"Riesgo país subió {rp['variacion_30d']} pb en 30 días")
 
     dol = d.get("dolares") or {}
-    for clave, nombre in (("brecha_mep_pct", "MEP"), ("brecha_blue_pct", "blue")):
+    for clave, nombre in (("brecha_mep_pct", "MEP"), ("brecha_ccl_pct", "CCL"), ("brecha_blue_pct", "blue")):
         b = dol.get(clave)
         if b is not None and b >= BRECHA_ALERTA_PCT:
             alertas.append(f"Brecha {nombre} vs oficial: {b}% (umbral {BRECHA_ALERTA_PCT}%)")
+
+    cm = dol.get("ccl_vs_mep_pct")
+    if cm is not None and cm >= CCL_VS_MEP_ALERTA_PCT:
+        alertas.append(f"CCL {cm}% por encima del MEP (umbral {CCL_VS_MEP_ALERTA_PCT}%): "
+                       "sacar dólares al exterior está costando más")
 
     bc = d.get("bcra") or {}
     if bc.get("reservas_semanas_cayendo", 0) >= RESERVAS_SEMANAS_CAIDA:
@@ -270,6 +280,7 @@ def imprimir_reporte(d):
     if dol:
         print(f"  Oficial (BNA) .... ${fmt(dol.get('oficial'))}")
         print(f"  MEP .............. ${fmt(dol.get('mep'))}   brecha {fmt(dol.get('brecha_mep_pct'), 1, '%')}")
+        print(f"  CCL .............. ${fmt(dol.get('ccl'))}   brecha {fmt(dol.get('brecha_ccl_pct'), 1, '%')}  (vs MEP {fmt(dol.get('ccl_vs_mep_pct'), 1, '%')})")
         print(f"  Blue ............. ${fmt(dol.get('blue'))}   brecha {fmt(dol.get('brecha_blue_pct'), 1, '%')}")
     else:
         print(f"  No disponible: {d['errores'].get('dolares')}")
@@ -369,6 +380,7 @@ def main():
             "riesgo_pais": RIESGO_PAIS_ALERTA,
             "riesgo_pais_suba_30d": RIESGO_PAIS_SUBA_30D,
             "brecha_pct": BRECHA_ALERTA_PCT,
+            "ccl_vs_mep_pct": CCL_VS_MEP_ALERTA_PCT,
             "reservas_semanas": RESERVAS_SEMANAS_CAIDA,
             "depositos_caida_30d_pct": DEPOSITOS_CAIDA_30D_PCT,
         }

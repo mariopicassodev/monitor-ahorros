@@ -40,7 +40,6 @@
   @media (min-width: 900px) {
     .grid { grid-template-columns: repeat(6, 1fr); }
     .grid .card { grid-column: span 2; }
-    .grid .card:nth-child(n+4) { grid-column: span 3; }
   }
   .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; }
   .card h3 { margin: 0; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
@@ -152,6 +151,14 @@ function render(d) {
     estB, { ok: "Normal", warn: "Atención", bad: "Alerta", na: "Sin dato" }[estB],
     `<b>Mala señal:</b> brecha de ${u.brecha_pct}% o más (atención desde ${nf(u.brecha_pct / 2, 1)}%).`));
 
+  // Dólar CCL
+  const cv = dol?.ccl, cbr = dol?.brecha_ccl_pct, cm = dol?.ccl_vs_mep_pct;
+  const estC = cv == null ? "na" : (cbr >= u.brecha_pct || cm >= u.ccl_vs_mep_pct) ? "bad" : (cbr >= u.brecha_pct / 2 || cm >= u.ccl_vs_mep_pct / 2) ? "warn" : "ok";
+  c.push(card("Dólar CCL", cv == null ? "s/d" : "$" + nf(cv),
+    cv == null ? "" : `Vs oficial: ${signo(cbr, 1)}% · Vs MEP: ${signo(cm, 1)}%`,
+    estC, { ok: "Normal", warn: "Atención", bad: "Alerta", na: "Sin dato" }[estC],
+    `<b>Mala señal:</b> más de ${nf(u.ccl_vs_mep_pct, 1)}% por encima del MEP, o brecha de ${u.brecha_pct}% o más contra el oficial.`));
+
   // Riesgo país
   const rv = rp?.valor, rvar = rp?.variacion_30d;
   const estR = rv == null ? "na" : (rv >= u.riesgo_pais || (rvar ?? 0) >= u.riesgo_pais_suba_30d) ? "bad" : (rv >= u.riesgo_pais * 0.8 || (rvar ?? 0) >= u.riesgo_pais_suba_30d / 2) ? "warn" : "ok";
@@ -185,6 +192,11 @@ function render(d) {
      `La <b>brecha</b> es cuánto más caro está el MEP o el blue que el oficial. Es el termómetro de la desconfianza en el peso.`,
      `Brecha de ${u.brecha_pct}% o más: el mercado espera una devaluación o hay restricciones que presionan. Una brecha que crece rápido suele anticipar movimientos del oficial.`,
      "Brecha baja y estable (menos de 5–10%): no hay presión inmediata sobre el tipo de cambio."],
+    ["Dólar CCL (contado con liquidación)",
+     "Es el dólar que se obtiene comprando un bono o acción en pesos y vendiéndolo en dólares en el exterior. A diferencia del MEP, los dólares quedan fuera del país. Es el que usan las empresas para girar dividendos, pagar deudas o importar con dólares propios, y por eso funciona como referencia de “cuánto vale salir del peso”.",
+     "Normalmente CCL y MEP cotizan casi igual. Lo que importa es la distancia entre ellos y contra el oficial: mide qué tan caro es sacar dólares del país.",
+     `CCL más de ${nf(u.ccl_vs_mep_pct, 1)}% por encima del MEP indica que girar dólares afuera está más caro de lo normal (por restricciones o por mucha demanda de dólares externos). Si además sube la brecha contra el oficial, las empresas trasladan ese valor a sus precios y crece la presión devaluatoria.`,
+     "CCL y MEP casi iguales y brecha baja contra el oficial: mercado sin tensión y sin restricciones que encarezcan el acceso a dólares."],
     ["Riesgo país",
      "Es la sobretasa que exigen los inversores para prestarle al país, medida en puntos básicos (100 pb = 1%) sobre los bonos del Tesoro de EE. UU.",
      "Resume cuán probable ve el mercado que Argentina pague su deuda y cuán fácil es que consiga financiamiento.",
