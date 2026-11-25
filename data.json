@@ -1,63 +1,64 @@
 {
-  "fecha_consulta": "2026-11-24 05:08",
+  "fecha_consulta": "2026-11-25 03:56",
   "errores": {},
   "dolares": {
-    "oficial": 1600,
-    "mep": 1743.1,
-    "blue": 1675,
-    "ccl": 1806.2,
-    "ccl_vs_mep_pct": 3.6,
-    "brecha_mep_pct": 8.9,
-    "brecha_blue_pct": 4.7,
-    "brecha_ccl_pct": 12.9
+    "oficial": 1615,
+    "mep": 1695.1,
+    "blue": 1700,
+    "ccl": 1797.1,
+    "ccl_vs_mep_pct": 6.0,
+    "brecha_mep_pct": 5.0,
+    "brecha_blue_pct": 5.3,
+    "brecha_ccl_pct": 11.3
   },
   "riesgo_pais": {
-    "valor": 1070,
-    "fecha": "2026-11-20",
-    "variacion_30d": 396,
+    "valor": 1035,
+    "fecha": "2026-11-23",
+    "variacion_30d": 328,
     "minimo_anio": 402,
     "maximo_anio": 1070
   },
   "bcra": {
-    "reservas_musd": 49553.0,
-    "reservas_fecha": "2026-11-18",
+    "reservas_musd": 49442.0,
+    "reservas_fecha": "2026-11-19",
     "reservas_semanas_cayendo": 0,
-    "reservas_var_7d_musd": 217,
-    "depositos_usd_valor": 43079.0,
+    "reservas_var_7d_musd": 369,
+    "depositos_usd_valor": 43203.0,
     "depositos_usd_desc": "Depósitos del sector privado no financiero",
-    "depositos_usd_var_30d_pct": 1.49
+    "depositos_usd_var_30d_pct": 1.66
   },
   "alertas": [
-    "Riesgo país en 1070 pb (umbral 1000)",
-    "Riesgo país subió 396 pb en 30 días"
+    "Riesgo país en 1035 pb (umbral 1000)",
+    "Riesgo país subió 328 pb en 30 días",
+    "CCL 6.0% por encima del MEP (umbral 5.0%): sacar dólares al exterior está costando más"
   ],
   "proximas_fechas": [
     {
       "fecha": "2027-01-09",
       "aprox": false,
       "evento": "Pago a bonistas (Bonares y Globales)",
-      "dias": 46
+      "dias": 45
     },
     {
       "fecha": "2027-04-01",
       "aprox": true,
       "evento": "Vencimiento BOPREAL (deuda del BCRA) - abril",
-      "dias": 128
+      "dias": 127
     },
     {
       "fecha": "2027-04-18",
       "aprox": false,
       "evento": "PASO provinciales en Santa Fe",
-      "dias": 145
+      "dias": 144
     },
     {
       "fecha": "2027-05-09",
       "aprox": false,
       "evento": "Elecciones provinciales en Tucumán",
-      "dias": 166
+      "dias": 165
     }
   ],
-  "generado_utc": "2026-11-24 05:08 UTC",
+  "generado_utc": "2026-11-25 03:56 UTC",
   "umbrales": {
     "riesgo_pais": 1000,
     "riesgo_pais_suba_30d": 200,
@@ -71,73 +72,73 @@
       "fecha": "2027-01-09",
       "aprox": false,
       "evento": "Pago a bonistas (Bonares y Globales)",
-      "dias": 46
+      "dias": 45
     },
     {
       "fecha": "2027-04-01",
       "aprox": true,
       "evento": "Vencimiento BOPREAL (deuda del BCRA) - abril",
-      "dias": 128
+      "dias": 127
     },
     {
       "fecha": "2027-04-18",
       "aprox": false,
       "evento": "PASO provinciales en Santa Fe",
-      "dias": 145
+      "dias": 144
     },
     {
       "fecha": "2027-05-09",
       "aprox": false,
       "evento": "Elecciones provinciales en Tucumán",
-      "dias": 166
+      "dias": 165
     },
     {
       "fecha": "2027-06-13",
       "aprox": false,
       "evento": "Elecciones generales en Santa Fe",
-      "dias": 201
+      "dias": 200
     },
     {
       "fecha": "2027-07-09",
       "aprox": false,
       "evento": "Pago a bonistas - el más grande del año",
-      "dias": 227
+      "dias": 226
     },
     {
       "fecha": "2027-08-15",
       "aprox": true,
       "evento": "PASO nacionales (si no se suspenden) - agosto",
-      "dias": 264
+      "dias": 263
     },
     {
       "fecha": "2027-10-01",
       "aprox": true,
       "evento": "Vencimiento BOPREAL - octubre",
-      "dias": 311
+      "dias": 310
     },
     {
       "fecha": "2027-10-24",
       "aprox": false,
       "evento": "Elecciones generales (presidente)",
-      "dias": 334
+      "dias": 333
     },
     {
       "fecha": "2027-10-29",
       "aprox": false,
       "evento": "Vence el Bonar AO27",
-      "dias": 339
+      "dias": 338
     },
     {
       "fecha": "2027-11-21",
       "aprox": false,
       "evento": "Posible balotaje",
-      "dias": 362
+      "dias": 361
     },
     {
       "fecha": "2027-12-10",
       "aprox": false,
       "evento": "Cambio o continuidad de gobierno",
-      "dias": 381
+      "dias": 380
     }
   ]
 }
